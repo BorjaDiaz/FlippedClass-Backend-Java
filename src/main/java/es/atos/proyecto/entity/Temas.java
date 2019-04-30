@@ -1,4 +1,4 @@
-package orm.proyecto.ORM.entity;
+package es.atos.proyecto.entity;
 
 import java.util.Set;
 

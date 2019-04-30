@@ -8,8 +8,8 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>orm.proyecto</groupId>
-	<artifactId>ORM</artifactId>
+	<groupId>es.atos.proyecto</groupId>
+	<artifactId>ProyectoAtos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ORM</name>
 	<description>Demo project for Spring Boot</description>
@@ -50,6 +50,14 @@
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>1.2.17</version>
+		</dependency>
+		
 		
 		<dependency>
 		     <groupId>org.projectlombok</groupId>

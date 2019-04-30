@@ -1,8 +1,8 @@
-package orm.proyecto.ORM.converter;
+package es.atos.proyecto.converter;
 
-import orm.proyecto.ORM.dto.TemaDto;
-import orm.proyecto.ORM.entity.Temas;
-import orm.proyecto.ORM.entity.Usuario;
+import es.atos.proyecto.dto.TemaDto;
+import es.atos.proyecto.entity.Temas;
+import es.atos.proyecto.entity.Usuario;
 
 public class TemasConverter {
 	

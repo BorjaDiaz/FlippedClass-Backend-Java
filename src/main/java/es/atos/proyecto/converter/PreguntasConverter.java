@@ -1,9 +1,9 @@
-package orm.proyecto.ORM.converter;
+package es.atos.proyecto.converter;
 
-import orm.proyecto.ORM.dto.TemaDto;
-import orm.proyecto.ORM.dto.TestDto;
-import orm.proyecto.ORM.entity.Temas;
-import orm.proyecto.ORM.entity.Test;
+import es.atos.proyecto.dto.TemaDto;
+import es.atos.proyecto.dto.TestDto;
+import es.atos.proyecto.entity.Temas;
+import es.atos.proyecto.entity.Test;
 
 public class PreguntasConverter {
 	

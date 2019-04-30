@@ -1,4 +1,4 @@
-package orm.proyecto.ORM.dto;
+package es.atos.proyecto.dto;
 
 public class UsuarioDto {
 	

@@ -1,9 +1,9 @@
-package orm.proyecto.ORM.converter;
+package es.atos.proyecto.converter;
 
 
 
-import orm.proyecto.ORM.dto.UsuarioDto;
-import orm.proyecto.ORM.entity.Usuario;
+import es.atos.proyecto.dto.UsuarioDto;
+import es.atos.proyecto.entity.Usuario;
 
 public class UsuarioConverter {
 	
