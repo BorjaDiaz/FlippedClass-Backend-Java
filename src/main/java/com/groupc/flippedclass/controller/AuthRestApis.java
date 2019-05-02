@@ -26,6 +26,7 @@ import com.groupc.flippedclass.entity.User;
 import com.groupc.flippedclass.message.request.LoginForm;
 import com.groupc.flippedclass.message.request.SignUpForm;
 import com.groupc.flippedclass.message.response.JwtResponse;
+import com.groupc.flippedclass.message.response.ResponseMessage;
 import com.groupc.flippedclass.repository.RoleRepository;
 import com.groupc.flippedclass.repository.UserRepository;
 import com.groupc.flippedclass.security.jwt.JwtProvider;
@@ -63,50 +64,50 @@ public class AuthRestApis {
    
       return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
- 
+   
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<String>("Fail -> Username is already taken!",
-                    HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+      if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
+            HttpStatus.BAD_REQUEST);
+      }
+   
+      if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
+            HttpStatus.BAD_REQUEST);
+      }
+   
+      // Creating user's account
+      User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
+          encoder.encode(signUpRequest.getPassword()));
+   
+      Set<String> strRoles = signUpRequest.getRole();
+      Set<Role> roles = new HashSet<>();
+   
+      strRoles.forEach(role -> {
+        switch (role) {
+        case "admin":
+          Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+              .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+          roles.add(adminRole);
+   
+          break;
+        case "teacher":
+          Role pmRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
+              .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+          roles.add(pmRole);
+   
+          break;
+        default:
+          Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+              .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+          roles.add(userRole);
         }
- 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<String>("Fail -> Email is already in use!",
-                    HttpStatus.BAD_REQUEST);
-        }
- 
-        // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
- 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
- 
-        strRoles.forEach(role -> {
-          switch(role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                  .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-            roles.add(adminRole);
-            
-            break;
-          case "teacher":
-                Role teacherRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
-                  .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-                roles.add(teacherRole);
-                
-            break;
-          default:
-              Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                  .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-              roles.add(userRole);              
-          }
-        });
-        
-        user.setRoles(roles);
-        userRepository.save(user);
- 
-        return ResponseEntity.ok().body("User registered successfully!");
+      });
+   
+      user.setRoles(roles);
+      userRepository.save(user);
+   
+      return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 }
