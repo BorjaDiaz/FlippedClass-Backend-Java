@@ -30,6 +30,7 @@ import com.groupc.flippedclass.message.response.ResponseMessage;
 import com.groupc.flippedclass.repository.RoleRepository;
 import com.groupc.flippedclass.repository.UserRepository;
 import com.groupc.flippedclass.security.jwt.JwtProvider;
+import com.groupc.flippedclass.security.services.MailService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -50,6 +51,9 @@ public class AuthRestApis {
  
     @Autowired
     JwtProvider jwtProvider;
+    
+    @Autowired
+    MailService mailService;
  
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
@@ -107,6 +111,7 @@ public class AuthRestApis {
    
       user.setRoles(roles);
       userRepository.save(user);
+      mailService.sendEmail(user);
    
       return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
