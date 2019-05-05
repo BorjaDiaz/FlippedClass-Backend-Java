@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.groupc.flippedclass.entity.User;
+import com.groupc.flippedclass.message.request.SignUpForm;
 import com.groupc.flippedclass.security.services.MailService;
 
 @Service
@@ -17,17 +18,17 @@ public class MailServiceImpl implements MailService {
 	public MailServiceImpl(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
-	
+
 	@Override
-	public void sendEmail(User user) {
+	public void sendEmail(SignUpForm signupRequest) {
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(user.getEmail());
-		mail.setSubject("Bienvenido a Flipped Class");
-		mail.setText("Bienvenido a Flipped Class, estos son tus credenciales de login: \n"
-				+ "Usuario: " + user.getUsername() + "\n"
-				+ "Password: " + user.getPassword());
+		mail.setTo(signupRequest.getEmail());
+		mail.setSubject("Registro en Flipped Class");
+		mail.setText("Bienvenido a Flipped Class, "
+				+ signupRequest.getName() + " " + signupRequest.getSurname() + "\n"
+				+ "Estos son sus credenciales de login: \n"
+				+ "Usuario: " + signupRequest.getUsername() + "\n"
+				+ "Password: " + signupRequest.getPassword());
 		javaMailSender.send(mail);
 	}
-
-	
 }

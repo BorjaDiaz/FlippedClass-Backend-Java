@@ -70,22 +70,22 @@ public class AuthRestApis {
     }
    
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-      if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signupRequest) {
+      if (userRepository.existsByUsername(signupRequest.getUsername())) {
         return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
             HttpStatus.BAD_REQUEST);
       }
    
-      if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      if (userRepository.existsByEmail(signupRequest.getEmail())) {
         return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
             HttpStatus.BAD_REQUEST);
       }
    
       // Creating user's account
-      User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
-          encoder.encode(signUpRequest.getPassword()));
+      User user = new User(signupRequest.getName(), signupRequest.getSurname(), signupRequest.getUsername(), signupRequest.getEmail(),
+          encoder.encode(signupRequest.getPassword()));
    
-      Set<String> strRoles = signUpRequest.getRole();
+      Set<String> strRoles = signupRequest.getRole();
       Set<Role> roles = new HashSet<>();
    
       strRoles.forEach(role -> {
@@ -97,9 +97,9 @@ public class AuthRestApis {
    
           break;
         case "teacher":
-          Role pmRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
+          Role teacherRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
               .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-          roles.add(pmRole);
+          roles.add(teacherRole);
    
           break;
         default:
@@ -111,7 +111,7 @@ public class AuthRestApis {
    
       user.setRoles(roles);
       userRepository.save(user);
-      mailService.sendEmail(user);
+      mailService.sendEmail(signupRequest);
    
       return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
