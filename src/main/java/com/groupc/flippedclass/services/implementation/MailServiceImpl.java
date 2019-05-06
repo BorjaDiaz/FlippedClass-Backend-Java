@@ -1,13 +1,12 @@
-package com.groupc.flippedclass.security.services.implementation;
+package com.groupc.flippedclass.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.groupc.flippedclass.entity.User;
 import com.groupc.flippedclass.message.request.SignUpForm;
-import com.groupc.flippedclass.security.services.MailService;
+import com.groupc.flippedclass.services.MailService;
 
 @Service
 public class MailServiceImpl implements MailService {

@@ -1,4 +1,4 @@
-package com.groupc.flippedclass.security.services;
+package com.groupc.flippedclass.services;
 
 import com.groupc.flippedclass.message.request.SignUpForm;
 
