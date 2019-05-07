@@ -62,14 +62,17 @@ public class User {
 		 		inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
+	private boolean enabled;
+	
 	public User() {}
 
-	public User(String name, String surname, String username, String email, String password) {
+	public User(String name, String surname, String username, String email, String password, boolean enabled) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
     }
 
 	public Long getId() {
@@ -127,6 +130,10 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 }

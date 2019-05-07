@@ -22,16 +22,18 @@ public class UserPrinciple implements UserDetails {
 	@JsonIgnore
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
+	private boolean enabled;
 	
 	public UserPrinciple(Long id, String name, 
             String username, String email, String password, 
-            Collection<? extends GrantedAuthority> authorities) {
+            Collection<? extends GrantedAuthority> authorities, boolean enabled) {
       this.id = id;
       this.name = name;
       this.username = username;
       this.email = email;
       this.password = password;
       this.authorities = authorities;
+      this.enabled = enabled;
   }
 
 	public static UserPrinciple build(User user) {
@@ -45,7 +47,8 @@ public class UserPrinciple implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                authorities,
+                user.isEnabled()
         );
     }
 	
@@ -63,22 +66,19 @@ public class UserPrinciple implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
-
+	
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
@@ -99,8 +99,7 @@ public class UserPrinciple implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+		return enabled;
 	}
 
 	@Override

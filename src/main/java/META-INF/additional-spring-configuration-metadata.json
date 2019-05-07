@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "flippedclass.jwtSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'flippedclass.jwtSecret'"
+  },
+  {
+    "name": "flippedclass.jwtExpiration",
+    "type": "java.lang.String",
+    "description": "A description for 'flippedclass.jwtExpiration'"
+  },
+  {
+    "name": "flippedclass.defaultPassword",
+    "type": "java.lang.String",
+    "description": "A description for 'flippedclass.defaultPassword'"
+  }
+]}

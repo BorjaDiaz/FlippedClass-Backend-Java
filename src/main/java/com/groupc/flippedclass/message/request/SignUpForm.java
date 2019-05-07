@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 public class SignUpForm {
 	
@@ -26,10 +28,14 @@ public class SignUpForm {
     @Email
     private String email;
     
+    
+    @Size(min = 6, max = 100)
+    private String password;
+    
     private Set<String> role;
     
-    private String password = "SPWD.2019";
-    
+    private boolean enabled;
+     
     public String getName() {
         return name;
     }
@@ -73,4 +79,14 @@ public class SignUpForm {
     public void setRole(Set<String> role) {
       this.role = role;
     }
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+    
 }

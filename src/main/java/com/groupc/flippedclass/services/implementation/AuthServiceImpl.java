@@ -1,9 +1,9 @@
 package com.groupc.flippedclass.services.implementation;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,30 +11,32 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.groupc.flippedclass.entity.Role;
-import com.groupc.flippedclass.entity.RoleName;
 import com.groupc.flippedclass.entity.User;
 import com.groupc.flippedclass.message.request.LoginForm;
 import com.groupc.flippedclass.message.request.SignUpForm;
 import com.groupc.flippedclass.message.response.JwtResponse;
 import com.groupc.flippedclass.message.response.ResponseMessage;
-import com.groupc.flippedclass.repository.RoleRepository;
 import com.groupc.flippedclass.repository.UserRepository;
 import com.groupc.flippedclass.security.JwtProvider;
 import com.groupc.flippedclass.services.AuthService;
 import com.groupc.flippedclass.services.MailService;
+import com.groupc.flippedclass.services.RoleService;
+import com.groupc.flippedclass.services.UserService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	UserRepository userRepository;
-
+	
 	@Autowired
-	RoleRepository roleRepository;
+	UserService userService;
+	
+	@Autowired
+	RoleService roleService;
 
 	@Autowired
 	MailService mailService;
@@ -43,11 +45,11 @@ public class AuthServiceImpl implements AuthService {
 	AuthenticationManager authenticationManager;
 
 	@Autowired
-	PasswordEncoder encoder;
-
-	@Autowired
 	JwtProvider jwtProvider;
-
+	
+	@Value("${flippedclass.defaultPassword}")
+	private String defaultPassword;
+	
 	@Override
 	public ResponseEntity<?> AuthenticateUser(LoginForm loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
@@ -64,47 +66,26 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public ResponseEntity<?> registerUser(SignUpForm signupRequest) {
 		if (userRepository.existsByUsername(signupRequest.getUsername())) {
-			return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
+			return new ResponseEntity<>(new ResponseMessage("Error: Este DAS ya ha sido dado de alta!"),
 					HttpStatus.BAD_REQUEST);
 		}
 
 		if (userRepository.existsByEmail(signupRequest.getEmail())) {
-			return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
+			return new ResponseEntity<>(new ResponseMessage("Error: Este Email ya ha sido dado de alta!"),
 					HttpStatus.BAD_REQUEST);
 		}
 
 		// Creating user's account
 		User user = new User(signupRequest.getName(), signupRequest.getSurname(), signupRequest.getUsername(),
-				signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()));
-
+				signupRequest.getEmail(), defaultPassword,true);
+		
 		Set<String> strRoles = signupRequest.getRole();
-		Set<Role> roles = new HashSet<>();
-
-		strRoles.forEach(role -> {
-			switch (role) {
-			case "admin":
-				Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-						.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-				roles.add(adminRole);
-
-				break;
-			case "teacher":
-				Role teacherRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
-						.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-				roles.add(teacherRole);
-
-				break;
-			default:
-				Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-						.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-				roles.add(userRole);
-			}
-		});
-
+		Set<Role> roles = roleService.getValidRoles(strRoles);
 		user.setRoles(roles);
+		mailService.sendEmail(user);
+		user.setPassword(userService.passwordEncoder(defaultPassword));
 		userRepository.save(user);
-		mailService.sendEmail(signupRequest);
-
+		
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
 	}
 

@@ -1,9 +1,9 @@
 package com.groupc.flippedclass.services;
 
-import com.groupc.flippedclass.message.request.SignUpForm;
+import com.groupc.flippedclass.entity.User;
 
 public interface MailService {
 	
-	public void sendEmail(SignUpForm signupRequest);
+	public void sendEmail(User user);
 	
 }
