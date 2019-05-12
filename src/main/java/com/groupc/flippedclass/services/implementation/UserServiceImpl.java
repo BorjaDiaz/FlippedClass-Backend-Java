@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.groupc.flippedclass.converter.UserConverter;
+import com.groupc.flippedclass.dto.UserDto;
 import com.groupc.flippedclass.entity.User;
 import com.groupc.flippedclass.repository.RoleRepository;
 import com.groupc.flippedclass.repository.UserRepository;
@@ -32,6 +34,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
+	}
+
+	@Override
+	public boolean updateUser(UserDto userDto) {
+		try {
+			userRepository.save(UserConverter.userDtoToEntity(userDto));
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

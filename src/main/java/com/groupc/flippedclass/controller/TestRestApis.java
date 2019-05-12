@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.groupc.flippedclass.dto.UserDto;
 import com.groupc.flippedclass.entity.User;
 import com.groupc.flippedclass.services.UserService;
 
@@ -41,4 +44,10 @@ public class TestRestApis {
 	public List<User> adminTable() {
 		return userService.getAllUsers();
 	}
+	
+	@PostMapping("/api/test/updateUser")
+	@PreAuthorize("hasRole('ADMIN')")
+    public void modifyUser(@RequestBody UserDto user) {
+    	userService.updateUser(user);
+    }
 }
