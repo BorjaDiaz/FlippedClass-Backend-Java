@@ -36,7 +36,7 @@ public class TopicServiceImpl implements TopicService{
 	@Override
 	public boolean deleteTopic(Topic topic) {
 		try {
-			Topic topicToDelete = topicRepository.findById(topic.getId()).get();
+			Topic topicToDelete = topicRepository.getOne(topic.getId());
 			topicRepository.delete(topicToDelete);
 			return true;
 		} catch (Exception e) {

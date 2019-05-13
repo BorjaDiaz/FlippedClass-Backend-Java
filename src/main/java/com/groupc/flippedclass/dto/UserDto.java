@@ -1,20 +1,22 @@
 package com.groupc.flippedclass.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.groupc.flippedclass.entity.Role;
 
 public class UserDto {
 
+
 	private Long id;
-	
 	private String name;
-	
 	private String surname;
-	
 	private String username;
-
 	private String email;
-	
 	private String password;
-
+	private Set<Role> roles = new HashSet<>();
+	private boolean enabled;
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,7 +24,8 @@ public class UserDto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -30,7 +33,7 @@ public class UserDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getSurname() {
 		return surname;
 	}
@@ -61,6 +64,18 @@ public class UserDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 	

@@ -52,7 +52,6 @@ public class User {
 	@Email
 	private String email;
 	
-	@NotBlank
 	@Size(min = 6, max = 100)
 	private String password;
 	
@@ -134,6 +133,10 @@ public class User {
 
 	public boolean isEnabled() {
 		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

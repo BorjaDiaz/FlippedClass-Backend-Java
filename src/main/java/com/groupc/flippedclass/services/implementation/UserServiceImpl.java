@@ -39,10 +39,29 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean updateUser(UserDto userDto) {
 		try {
-			userRepository.save(UserConverter.userDtoToEntity(userDto));
+			//TODO AÑADIR MODIFICACION DE ROLES.
+			User user = userRepository.findByUsername(userDto.getUsername()).get();
+			user.setName(userDto.getName());
+			user.setSurname(userDto.getSurname());
+			user.setEmail(userDto.getEmail());
+			userRepository.save(user);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean switchUserEnabled(UserDto userDto) {
+		User user = userRepository.findByUsername(userDto.getUsername()).get();
+		if(!userDto.isEnabled()) {
+			user.setEnabled(true);
+			userRepository.save(user);
+			return true;
+		} else {
+			user.setEnabled(false);
+			userRepository.save(user);
 			return false;
 		}
 	}

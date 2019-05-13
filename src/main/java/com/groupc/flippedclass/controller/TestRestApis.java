@@ -50,4 +50,12 @@ public class TestRestApis {
     public void modifyUser(@RequestBody UserDto user) {
     	userService.updateUser(user);
     }
+	
+	@PostMapping("/api/user/switchEnabled")
+	@PreAuthorize("hasRole('ADMIN')")
+    public void switchEnabled(@RequestBody UserDto user) {
+    	userService.switchUserEnabled(user);
+    }
+	
+	
 }

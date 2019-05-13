@@ -10,4 +10,5 @@ public interface UserService {
 	public String passwordEncoder(String password);
 	public List<User> getAllUsers();
 	public boolean updateUser(UserDto userDto);
+	public boolean switchUserEnabled(UserDto userDto);
 }
