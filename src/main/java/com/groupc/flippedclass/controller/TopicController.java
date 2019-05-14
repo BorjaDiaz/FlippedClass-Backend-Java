@@ -39,4 +39,10 @@ public class TopicController {
     public void deleteTopic(@RequestBody TopicDto topicDto) {
 		topicService.deleteTopic(TopicConverter.topicDtoToEntity(topicDto));
     }
+	
+	@PostMapping("/api/topic/updateTopic")
+	@PreAuthorize("hasRole('ADMIN')")
+    public void updateTopic(@RequestBody TopicDto topicDto) {
+		topicService.updateTopic(TopicConverter.topicDtoToEntity(topicDto));
+    }
 }

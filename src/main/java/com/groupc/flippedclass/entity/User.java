@@ -63,6 +63,8 @@ public class User {
 	
 	private boolean enabled;
 	
+	private int firstLogin;
+	
 	public User() {}
 
 	public User(String name, String surname, String username, String email, String password, boolean enabled) {
@@ -138,5 +140,13 @@ public class User {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
+	public int getFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(int firstLogin) {
+		this.firstLogin = firstLogin;
+	}
+
 }

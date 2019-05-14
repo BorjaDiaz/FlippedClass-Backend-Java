@@ -1,23 +1,21 @@
-package com.groupc.flippedclass.services.implementation;
+package com.groupc.flippedclass.helper;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.groupc.flippedclass.entity.Role;
 import com.groupc.flippedclass.entity.RoleName;
 import com.groupc.flippedclass.repository.RoleRepository;
-import com.groupc.flippedclass.services.RoleService;
 
-@Service
-public class RoleServiceImpl implements RoleService {
+@Component
+public class RoleHelper {
 	
 	@Autowired
 	RoleRepository roleRepository;
 
-	@Override
 	public Set<Role> getValidRoles(Set<String> strRoles) {
 		Set<Role> roles = new HashSet<>();
 
@@ -44,5 +42,4 @@ public class RoleServiceImpl implements RoleService {
 
 		return roles;
 	}
-
 }

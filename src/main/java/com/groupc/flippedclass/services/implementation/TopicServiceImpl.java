@@ -45,4 +45,19 @@ public class TopicServiceImpl implements TopicService{
 		}
 	}
 
+
+	@Override
+	public boolean updateTopic(Topic topic) {
+		try {
+			Topic topicToUpdate = topicRepository.getOne(topic.getId());
+			topicToUpdate.setTopic(topic.getTopic());
+			topicRepository.save(topicToUpdate);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+
 }

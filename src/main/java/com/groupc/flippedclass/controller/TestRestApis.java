@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.flippedclass.dto.UserDto;
 import com.groupc.flippedclass.entity.User;
+import com.groupc.flippedclass.message.request.SignUpForm;
 import com.groupc.flippedclass.services.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -47,15 +48,20 @@ public class TestRestApis {
 	
 	@PostMapping("/api/test/updateUser")
 	@PreAuthorize("hasRole('ADMIN')")
-    public void modifyUser(@RequestBody UserDto user) {
-    	userService.updateUser(user);
+    public void modifyUser(@RequestBody SignUpForm signupForm) {
+    	userService.updateUser(signupForm);
+    }
+	
+	@PostMapping("/api/user/updatePassword")
+	@PreAuthorize("hasRole('USER') or hasRole('TEACHER') or hasRole('ADMIN')")
+    public void updatePassword(@RequestBody SignUpForm signupForm) {
+    	userService.updatePassword(signupForm);
     }
 	
 	@PostMapping("/api/user/switchEnabled")
 	@PreAuthorize("hasRole('ADMIN')")
-    public void switchEnabled(@RequestBody UserDto user) {
-    	userService.switchUserEnabled(user);
+    public void switchEnabled(@RequestBody UserDto userDto) {
+    	userService.switchUserEnabled(userDto);
     }
-	
 	
 }

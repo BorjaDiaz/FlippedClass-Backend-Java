@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.groupc.flippedclass.entity.Role;
 import com.groupc.flippedclass.entity.User;
+import com.groupc.flippedclass.helper.RoleHelper;
 import com.groupc.flippedclass.message.request.LoginForm;
 import com.groupc.flippedclass.message.request.SignUpForm;
 import com.groupc.flippedclass.message.response.JwtResponse;
@@ -23,7 +24,6 @@ import com.groupc.flippedclass.repository.UserRepository;
 import com.groupc.flippedclass.security.JwtProvider;
 import com.groupc.flippedclass.services.AuthService;
 import com.groupc.flippedclass.services.MailService;
-import com.groupc.flippedclass.services.RoleService;
 import com.groupc.flippedclass.services.UserService;
 
 @Service
@@ -36,10 +36,10 @@ public class AuthServiceImpl implements AuthService {
 	UserService userService;
 	
 	@Autowired
-	RoleService roleService;
-
-	@Autowired
 	MailService mailService;
+	
+	@Autowired
+	RoleHelper roleHelper;
 
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities(),userRepository.findByUsername(userDetails.getUsername()).get().getFirstLogin()));
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 				signupRequest.getEmail(), defaultPassword,true);
 		
 		Set<String> strRoles = signupRequest.getRole();
-		Set<Role> roles = roleService.getValidRoles(strRoles);
+		Set<Role> roles = roleHelper.getValidRoles(strRoles);
 		user.setRoles(roles);
 		mailService.sendEmail(user);
 		user.setPassword(userService.passwordEncoder(defaultPassword));
