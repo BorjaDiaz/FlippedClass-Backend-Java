@@ -18,4 +18,8 @@ public class TopicDto {
 		this.topic = topic;
 	}
 	
+	public String getAll() {
+		return "Id: "+id+", topic:"+topic;
+	}
+	
 }

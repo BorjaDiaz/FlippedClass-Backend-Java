@@ -1,5 +1,6 @@
 package com.groupc.flippedclass.message.request;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.Email;
@@ -29,7 +30,7 @@ public class SignUpForm {
     @Size(min = 6, max = 100)
     private String password;
     
-    private Set<String> role;
+    private Set<String> role =  new HashSet<>();
     
     private boolean enabled;
      
@@ -83,6 +84,10 @@ public class SignUpForm {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public String getAll() {
+		return "Name: "+name+ ", surname: "+surname+", username: "+username+", email: "+email+", enable: "+enabled;
 	}
 
     

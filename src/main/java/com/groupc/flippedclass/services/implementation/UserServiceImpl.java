@@ -4,6 +4,7 @@ package com.groupc.flippedclass.services.implementation;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ import com.groupc.flippedclass.services.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	
+	static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
+	
 	@Autowired
 	UserRepository userRepository;
 	
@@ -55,6 +59,7 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			e.printStackTrace();
 			return false;
 		}
@@ -83,6 +88,7 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			e.printStackTrace();
 			return false;
 		}

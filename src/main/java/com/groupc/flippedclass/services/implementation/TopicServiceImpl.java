@@ -2,6 +2,7 @@ package com.groupc.flippedclass.services.implementation;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,10 @@ import com.groupc.flippedclass.services.TopicService;
 @Service
 public class TopicServiceImpl implements TopicService{
 
+	
+	static Logger log = Logger.getLogger(TopicServiceImpl.class.getName());
+	
+	
 	@Autowired
 	TopicRepository topicRepository;
 	
@@ -28,6 +33,7 @@ public class TopicServiceImpl implements TopicService{
 			topicRepository.save(topic);
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			e.printStackTrace();
 			return false;
 		}
@@ -40,6 +46,7 @@ public class TopicServiceImpl implements TopicService{
 			topicRepository.delete(topicToDelete);
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			e.printStackTrace();
 			return false;
 		}
@@ -54,6 +61,7 @@ public class TopicServiceImpl implements TopicService{
 			topicRepository.save(topicToUpdate);
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			e.printStackTrace();
 			return false;
 		}

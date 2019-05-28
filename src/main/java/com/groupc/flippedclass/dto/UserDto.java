@@ -78,5 +78,9 @@ public class UserDto {
 		return enabled;
 	}
 	
+	public String getAll() {
+		return "Id: "+id+", Name: "+name+ ", surname: "+surname+", username: "+username+", email: "+email+", enable: "+enabled+", rol: "+roles;
+	}
+	
 	
 }

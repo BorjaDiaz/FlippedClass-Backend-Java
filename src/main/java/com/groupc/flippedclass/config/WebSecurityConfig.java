@@ -1,6 +1,7 @@
 package com.groupc.flippedclass.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +19,26 @@ import com.groupc.flippedclass.security.JwtAuthEntryPoint;
 import com.groupc.flippedclass.security.JwtAuthTokenFilter;
 import com.groupc.flippedclass.services.implementation.UserDetailsServiceImpl;
 
-@Configuration
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
 		prePostEnabled = true
 )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	 //Getting values from properties file
+    @Value("${ldap.urls}")
+    private String ldapUrls;
+    @Value("${ldap.base.dn}")
+    private String ldapBaseDn;
+    @Value("${ldap.username}")
+    private String ldapSecurityPrincipal;
+    @Value("${ldap.password}")
+    private String ldapPrincipalPassword;
+    @Value("${ldap.user.dn.pattern}")
+    private String ldapUserDnPattern;
+    @Value("${ldap.enabled}")
+    private String ldapEnabled;
 	
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -67,4 +81,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
 }
